@@ -78,9 +78,12 @@ model Categorias {
 }
 
 
+
 model Produtos {
   id           String     @id @default(uuid())
   nome         String
+  preco        Float
+  descricao    String?
   categoriaId  String
   categoria    Categorias @relation(fields: [categoriaId], references: [id])
 }

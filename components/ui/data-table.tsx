@@ -22,3 +22,5 @@ export function DataTableWrapper<T>({ columns, data, title }: Props<T>) {
     </div>
   );
 }
+export { DataTable };
+

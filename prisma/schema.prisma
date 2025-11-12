@@ -85,4 +85,15 @@ model Produtos {
   descricao    String?
   categoriaId  String
   categoria    Categorias @relation(fields: [categoriaId], references: [id])
+  pedidos      Pedidos[]
+}
+
+model Pedidos {
+  id         String    @id @default(uuid())
+  nome       String
+  endereco   String
+  telefone   String
+  produtos   Produtos[] // Relacionamento many-to-many
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }

@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma-client'
 import { columns } from './columns'
-import { DataTable } from '@/components/ui/data-table'
+export { DataTable } from '@/components/ui/data-table'
 import AddPedido from './_components/add-pedido'
 
 export default async function PedidosPage() {

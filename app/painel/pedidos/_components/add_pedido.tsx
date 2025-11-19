@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { criarPedido } from '../actions'
 import { toast } from 'sonner'
-import { MultiSelectCombobox } from '@/components/ui/multi-select-combobox'
+import { MultiSelectCombobox } from "@/components/ui/multi-select-combobox"
 
 export default function AddPedido() {
   const [open, setOpen] = useState(false)

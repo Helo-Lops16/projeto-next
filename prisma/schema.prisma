@@ -85,6 +85,7 @@ model Produtos {
   categoriaId String
   categoria   Categorias        @relation(fields: [categoriaId], references: [id])
   pedidos     PedidosProdutos[] 
+  imagemUrl   String?  
 }
 
 model Pedidos {

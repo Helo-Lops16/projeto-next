@@ -3,6 +3,9 @@ import AddProduto from './_components/add-produto'
 import EditProduto from './_components/edit-produto'
 import DeleteProduto from './_components/delete-produto'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { Image } from 'lucide-react'
 
 export default async function ProdutosPage() {
   const [produtos, categorias] = await Promise.all([
@@ -18,30 +21,85 @@ export default async function ProdutosPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Produtos</h1>
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold tracking-tight">Produtos</h1>
+          <p className="text-sm text-muted-foreground">
+            Gerencie os produtos do seu catálogo
+          </p>
+        </div>
         <AddProduto categorias={categorias} />
       </div>
 
+      <Separator />
+
       {produtos.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-2 rounded-md border border-dashed p-8 text-center text-muted-foreground">
-          <p>Nenhum produto cadastrado</p>
-          <p className="text-sm">Clique em "Adicionar Produto" para cadastrar um novo item.</p>
+        <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-dashed p-8 text-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+            <Image className="h-10 w-10 text-muted-foreground" />
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold">Nenhum produto cadastrado</h3>
+            <p className="text-sm text-muted-foreground max-w-sm">
+              Comece adicionando produtos ao seu catálogo para que apareçam aqui.
+            </p>
+          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {produtos.map((produto) => (
-            <Card key={produto.id} className="transition-shadow hover:shadow-md">
-              <CardHeader>
-                <CardTitle className="text-lg line-clamp-1">{produto.nome}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-sm">
-                <p><strong>Preço:</strong> R$ {produto.preco.toFixed(2)}</p>
-                <p><strong>Categoria:</strong> {produto.categoria.nome}</p>
-                {produto.descricao && (
-                  <p className="text-muted-foreground line-clamp-2">{produto.descricao}</p>
+            <Card key={produto.id} className="overflow-hidden transition-all hover:shadow-lg">
+              {/* Imagem do Produto */}
+              <div className="aspect-square overflow-hidden bg-muted">
+                {produto.imagemUrl ? (
+                  <img
+                    src={produto.imagemUrl}
+                    alt={produto.nome}
+                    className="h-full w-full object-cover transition-transform hover:scale-105"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+                    <div className="text-center">
+                      <Image className="mx-auto h-12 w-12 mb-2" />
+                      <p className="text-xs">Sem imagem</p>
+                    </div>
+                  </div>
                 )}
+              </div>
+
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between space-x-2">
+                  <CardTitle className="text-lg leading-6 line-clamp-2 flex-1">
+                    {produto.nome}
+                  </CardTitle>
+                  <Badge variant="secondary" className="ml-2 shrink-0">
+                    {produto.categoria.nome}
+                  </Badge>
+                </div>
+              </CardHeader>
+              
+              <CardContent className="pb-3">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-muted-foreground">Preço</span>
+                    <span className="text-lg font-bold text-primary">
+                      R$ {produto.preco.toFixed(2)}
+                    </span>
+                  </div>
+                  
+                  {produto.descricao && (
+                    <div>
+                      <span className="text-sm font-medium text-muted-foreground">Descrição</span>
+                      <p className="text-sm text-foreground mt-1 line-clamp-2">
+                        {produto.descricao}
+                      </p>
+                    </div>
+                  )}
+                </div>
               </CardContent>
-              <CardFooter className="flex justify-end gap-2">
+
+              <Separator />
+              
+              <CardFooter className="flex justify-end gap-2 pt-4">
                 <EditProduto produto={produto} categorias={categorias} />
                 <DeleteProduto produto={produto} />
               </CardFooter>

@@ -60,7 +60,7 @@ export async function excluirProduto(id: string) {
 }
 
 
-// Em actions.ts (produtos)
+
 export async function buscarCategorias() {
   try {
     const categorias = await prisma.categorias.findMany({

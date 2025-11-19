@@ -2,16 +2,18 @@
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { redirect } from "next/navigation";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function LoginForm() {
-
-  const [loading, setloading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
   function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError("");
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
     const senha = formData.get("senha") as string;
@@ -22,23 +24,52 @@ export default function LoginForm() {
     },
     {
       onSuccess: () => redirect("/painel"),
-      onRequest: () => setloading(true),
-      onResponse:() => setloading(false),
+      onRequest: () => setLoading(true),
+      onResponse: () => setLoading(false),
       onError: (ctx) => setError(ctx.error.message)
-    }
-
-  )
+    })
   }
 
   return (
-  <form onSubmit={handleLogin}>
-    <Input name="email" />
-    <Input name="senha" />
-    <Button disabled={loading}>
- 
-    </Button>
-    {error && error}
-  </form>
-  )
+    <form onSubmit={handleLogin} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">E-mail</Label>
+        <Input 
+          id="email"
+          name="email" 
+          type="email"
+          placeholder="seu@email.com"
+          required
+          disabled={loading}
+        />
+      </div>
 
+      <div className="space-y-2">
+        <Label htmlFor="senha">Senha</Label>
+        <Input 
+          id="senha"
+          name="senha" 
+          type="password"
+          placeholder="Sua senha"
+          required
+          disabled={loading}
+        />
+      </div>
+
+      <Button 
+        type="submit" 
+        disabled={loading}
+        className="w-full"
+      >
+        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        {loading ? "Entrando..." : "Entrar"}
+      </Button>
+
+      {error && (
+        <div className="text-sm text-destructive bg-destructive/15 p-3 rounded-md">
+          {error}
+        </div>
+      )}
+    </form>
+  )
 }
